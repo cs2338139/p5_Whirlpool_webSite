@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "jf-openhuninn";
+    src: url("/assets/font/jf-openhuninn-1.1.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "DFLiHei";
+    src: url("/assets/font/DFLiHei.ttc") format("ttc");
+  }
+  @font-face {
+    font-family: "DFLiHei-300";
+    src: url("/assets/font/DFLiHei-300.ttc") format("ttc");
+  }
+  @font-face {
+    font-family: "DFLiHei-700";
+    src: url("/assets/font/DFLiHei-700.ttc") format("ttc");
+  }
+  html {
+    /* font-size: 16px; */
+    @apply body-base;
+    @apply md:body-md;
+    @apply sm:body-sm;
+  }
+  body {
+    @apply p-0 m-0 font-DFLiHei;
+    background: linear-gradient(90deg, rgba(200, 200, 200, 0.2) 4%, transparent 0), linear-gradient(rgba(200, 200, 200, 0.2) 4%, transparent 0);
+    background-size: 30px 30px;
+  }
+}
+
+@layer components {
+  .dev-red {
+    @apply borderView box-border border-red-700 border-solid;
+  }
+  .dev-pink {
+    @apply borderView box-border border-pink-300 border-solid;
+  }
+  .dev-blue {
+    @apply borderView box-border border-blue-700 border-solid;
+  }
+  .dev-black {
+    @apply borderView box-border border-black border-solid;
+  }
+  .dev-green {
+    @apply borderView box-border border-green-600 border-solid;
+  }
+  .dev-brown {
+    @apply borderView box-border border-yellow-700 border-solid;
+  }
+  .dev-slate {
+    @apply border-slate-800 box-border border border-solid;
+  }
+
+  .wrap-8 {
+    @apply max-w-8xl relative mx-auto my-0 2xl:px-10;
+  }
+
+  .wrap-8-image {
+    @apply max-w-8xl relative mx-auto my-0 2xl:px-5 sm:px-2;
+  }
+
+  .wrap-6 {
+    @apply relative max-w-6xl mx-auto my-0 xl:px-20 sm:px-6;
+  }
+
+  .IsDisabled {
+    @apply text-slate-400;
+  }
+
+  .IsEnabled {
+    @apply text-black;
+  }
+
+  .SlateBorder {
+    @apply border-slate-400;
+  }
+
+  .BlueBorder {
+    @apply border-custom-0;
+  }
+
+  .scrollbarCustom {
+    @apply scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-rounded-xl scrollbar-thumb-rounded-xl scrollbar-track-gray-100;
+  }
+}
+
+@layer utilities {
+  .body-base {
+    font-size: 16px;
+  }
+
+  .body-md {
+    font-size: 15px;
+  }
+
+  .body-sm {
+    font-size: 14px;
+  }
+
+  .w-1\/15 {
+    width: 6.6666667%;
+  }
+
+  .max-w-8xl {
+    max-width: 1440px;
+  }
+}
+
+@layer components {
+  .borderView {
+    @apply border;
+  }
+}
