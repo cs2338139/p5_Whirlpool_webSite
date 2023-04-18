@@ -27,8 +27,8 @@
   }
   body {
     @apply p-0 m-0 font-DFLiHei;
-    background: linear-gradient(90deg, rgba(200, 200, 200, 0.2) 4%, transparent 0), linear-gradient(rgba(200, 200, 200, 0.2) 4%, transparent 0);
-    background-size: 30px 30px;
+    /* background: linear-gradient(90deg, rgba(200, 200, 200, 0.2) 4%, transparent 0), linear-gradient(rgba(200, 200, 200, 0.2) 4%, transparent 0);
+    background-size: 30px 30px; */
   }
 }
 
