@@ -45,6 +45,12 @@ onMounted(() => {
         if (this.r < ballMaxR) this.r += 0.04;
       }
 
+      // AddAngleX(x){
+      //   let newX=
+
+      //   return
+      // }
+
       display() {
         for (let i = 0; i < this.xArray.length; i++) {
           p.push();
@@ -66,8 +72,8 @@ onMounted(() => {
     let deviation = 120;
     let ballOneTimeAppear = 3;
     let ballMaxR = 25;
-    let movePos = 0;
-    let _color = [p.color(235, 189, 52), p.color(72, 197                    , 232), p.color(240, 109, 58)];
+    let angle = 0;
+    let _color = [p.color(235, 189, 52), p.color(72, 197, 232), p.color(240, 109, 58)];
 
     p.setup = () => {
       p.createCanvas(p.windowWidth, p.windowHeight).parent(container.value);
@@ -111,8 +117,8 @@ onMounted(() => {
     };
 
     p.mouseWheel = (event) => {
-      movePos += event.delta / 1000;
-      console.log(movePos);
+      angle += event.delta/100;
+      console.log(angle);
     };
   });
 });
