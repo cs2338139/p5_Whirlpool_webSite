@@ -45,6 +45,12 @@ onMounted(() => {
         if (this.r < dynamicBallMaxR) this.r += 0.04;
       }
 
+      // AddAngleX(x){
+      //   let newX=
+
+      //   return
+      // }
+
       display() {
         for (let i = 0; i < this.xArray.length; i++) {
           p.push();
@@ -144,8 +150,8 @@ onMounted(() => {
     }
 
     p.mouseWheel = (event) => {
-      movePos += event.delta / 1000;
-      console.log(movePos);
+      angle += event.delta/100;
+      console.log(angle);
     };
   });
 });
