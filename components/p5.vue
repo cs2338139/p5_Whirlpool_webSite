@@ -55,16 +55,18 @@ onMounted(() => {
         }
       }
 
-      // displayStatic() {
-      //   for (let i = 0; i < 1; i++) {
-      //     p.push();
-      //     this._color.setAlpha(255);
-      //     p.fill(this._color);
-      //     p.noStroke();
-      //     p.ellipse(this.x, this.y, this.r);
-      //     p.pop();
-      //   }
-      // }
+      displayStatic() {
+        for (let i = 0; i < 1; i++) {
+          p.push();
+          this._color.setAlpha(255);
+          p.fill(this._color);
+          p.noStroke();
+          p.ellipse(this.x, this.y, this.r);
+          p.pop();
+
+          console.log(staticBalls[i]);
+        }
+      }
     }
 
     class StaticBallSetting {
@@ -79,9 +81,8 @@ onMounted(() => {
       color = [p.color(235, 109, 52), p.color(2, 197, 232), p.color(240, 0, 58)];
       r = new this.R();
     }
-
-    let StaticBallSetting = new StaticBallSetting(10);
-    let staticBalls = new Array(staticBallsCountMax);
+    let staticBallSetting = new StaticBallSetting(10);
+    let staticBalls = new Array(staticBallSetting.countMax);
 
     class DynamicBallSetting {
       constructor(countMax) {
@@ -122,23 +123,24 @@ onMounted(() => {
 
     p.draw = () => {
       p.background(10);
-      // CreateStaticBalls();
-      CreateDynamicBalls();
-      DynamicBallsUpdate();
+      CreateStaticBalls();
+      // CreateDynamicBalls();
+      // DynamicBallsUpdate();
     };
 
     function CreateStaticBalls() {
-      for (let i = 0; i < staticBallsCountMax; i++) {
-        let x, y;
-        do {
-          x = p.randomGaussian() * deviation * 50 + p.windowWidth / 2;
-          y = p.randomGaussian() * deviation * 50 + p.windowHeight / 2;
-        } while (p.dist(p.windowWidth / 2, p.windowHeight / 2, x, y) < 20 || p.dist(p.windowWidth / 2, p.windowHeight / 2, x, y) > 30);
+      for (let i = 0; i < staticBallSetting.countMax; i++) {
+        if (!staticBalls[i]) {
+          let x, y;
+          do {
+            x = p.randomGaussian() * deviation + p.windowWidth / 2;
+            y = p.randomGaussian() * deviation + p.windowHeight / 2;
+          } while (p.dist(p.windowWidth / 2, p.windowHeight / 2, x, y) < 20 || p.dist(p.windowWidth / 2, p.windowHeight / 2, x, y) > 30);
 
-        staticBalls[i] = new ball(x, y, p.random(staticBallsRRangeMin, staticBallsRRangeMax), p.random(_staticColor), p.random(dynamicBallMinSpeed, dynamicBallMaxSpeed));
+          staticBalls[i] = new ball(x, y, p.random(staticBallSetting.r.startMin, staticBallSetting.r.startMax), p.random(staticBallSetting.color), p.random(dynamicBallSetting.speed.min, dynamicBallSetting.speed.max));
+        }
         staticBalls[i].displayStatic();
         // console.log(staticBalls[i]);
-        //FIXME
       }
     }
 
