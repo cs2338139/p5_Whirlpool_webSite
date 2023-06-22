@@ -7,10 +7,11 @@ let sketch = null;
 onMounted(() => {
   sketch = new p5((p) => {
     class ball {
-      constructor(x, y, r, _color, speed) {
+      constructor(x, y, r, angle, _color, speed) {
         this.x = x;
         this.y = y;
         this.r = r;
+        this.angle = angle;
         this._color = _color;
         this.speed = speed;
       }
@@ -24,14 +25,16 @@ onMounted(() => {
             let _x = this.x - (p.windowWidth / 2 - this.x) - ((i * (p.windowWidth / 2 - this.x)) / this.speed / 100) * dynamicBallSetting.shadow.rate;
             this.xArray.push(_x);
           } else {
-            this.xArray[i] -= ((p.windowWidth / 2 - this.xArray[i]) / 1000) * this.speed;
+            this.xArray[i] -= ((p.windowWidth / 2 - this.xArray[i]) / 1000) * this.speed - p.cos(this.angle + ballRotationBase);
+            // this.xArray[i] +=
           }
 
           if (this.yArray.length != dynamicBallSetting.shadow.count) {
             let _y = this.y - (p.windowHeight / 2 - this.y) - ((i * (p.windowHeight / 2 - this.y)) / this.speed / 100) * dynamicBallSetting.shadow.rate;
             this.yArray.push(_y);
           } else {
-            this.yArray[i] -= ((p.windowHeight / 2 - this.yArray[i]) / 1000) * this.speed;
+            this.yArray[i] -= ((p.windowHeight / 2 - this.yArray[i]) / 1000) * this.speed - p.sin(this.angle + ballRotationBase);
+            // this.yArray[i] += ;
           }
 
           if (this.aArray.length != dynamicBallSetting.shadow.count) {
@@ -113,7 +116,7 @@ onMounted(() => {
     }
     let dynamicBallSetting = new DynamicBallSetting(2000);
     let dynamicBalls = new Array(dynamicBallSetting.countMax);
-    let ballRotation = 0;
+    let ballRotationBase = 0;
 
     p.setup = () => {
       p.createCanvas(p.windowWidth, p.windowHeight).parent(container.value);
@@ -126,7 +129,6 @@ onMounted(() => {
 
     p.draw = () => {
       p.background("rgba(10,10,10,0.3)");
-      console.log(ballRotation)
       CreateStaticBalls();
       CreateDynamicBalls();
       DynamicBallsUpdate();
@@ -154,12 +156,15 @@ onMounted(() => {
       for (let i = 0; i < dynamicBallSetting.countMax; i++) {
         if (!dynamicBalls[i]) {
           let x, y;
-          do {
-            x = p.randomGaussian() * dynamicBallSetting.deviation + p.windowWidth / 2;
-            y = p.randomGaussian() * dynamicBallSetting.deviation + p.windowHeight / 2;
-          } while (p.dist(p.windowWidth / 2, p.windowHeight / 2, x, y) < 20 || p.dist(p.windowWidth / 2, p.windowHeight / 2, x, y) > 30);
+          let angle = p.random(0, 360);
+          x = p.random(20, 30) * p.cos(angle) + p.windowWidth / 2;
+          y = p.random(20, 30) * p.sin(angle) + p.windowHeight / 2;
+          // do {
+          //   x = p.randomGaussian() * dynamicBallSetting.deviation + p.windowWidth / 2;
+          //   y = p.randomGaussian() * dynamicBallSetting.deviation + p.windowHeight / 2;
+          // } while (p.dist(p.windowWidth / 2, p.windowHeight / 2, x, y) < 20 || p.dist(p.windowWidth / 2, p.windowHeight / 2, x, y) > 30);
 
-          dynamicBalls[i] = new ball(x, y, p.random(dynamicBallSetting.r.startMin, dynamicBallSetting.r.startMax), p.random(dynamicBallSetting.color), p.random(dynamicBallSetting.speed.min, dynamicBallSetting.speed.max));
+          dynamicBalls[i] = new ball(x, y, p.random(dynamicBallSetting.r.startMin, dynamicBallSetting.r.startMax), angle, p.random(dynamicBallSetting.color), p.random(dynamicBallSetting.speed.min, dynamicBallSetting.speed.max));
           _ballOneTimeAppear++;
           if (_ballOneTimeAppear >= dynamicBallSetting.oneTimeAppear) break;
         }
@@ -192,10 +197,13 @@ onMounted(() => {
     }
 
     p.mouseWheel = (event) => {
+      // setTimeout(() => {
+      //   ballRotationBase = 0;
+      // }, 500);
       if (event.deltaY > 0) {
-        ballRotation += p.PI / 4;
+        ballRotationBase += 10;
       } else {
-        ballRotation -= p.PI / 4;
+        ballRotationBase -= 10;
       }
     };
   });
