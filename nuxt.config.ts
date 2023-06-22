@@ -15,7 +15,7 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: "zh-TW",
       },
-      title: "JinCheng Studio",
+      title: "P%_WhirlPool",
       script: [
         {
           type: "module",

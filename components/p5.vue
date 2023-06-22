@@ -37,11 +37,12 @@ onMounted(() => {
           if (this.aArray.length != dynamicBallSetting.shadow.count) {
             this.aArray.push(0);
           } else {
-            if (this.aArray[i] < this.a + (255 / this.xArray.length) * i) this.aArray[i] += 1;
+            if (this.aArray[i] < this.a + (255 / this.xArray.length) * (i + 1)) this.aArray[i] += 1;
           }
         }
 
-        if (this.r < dynamicBallSetting.r.max) this.r += 0.04;
+        let rMax = this.speed < dynamicBallSetting.speed.slow ? dynamicBallSetting.r.slowMax : dynamicBallSetting.r.max;
+        if (this.r < rMax) this.r += 0.04;
       }
 
       display() {
@@ -56,50 +57,52 @@ onMounted(() => {
       }
 
       displayStatic() {
-          p.push();
-          this._color.setAlpha(255);
-          p.fill(this._color);
-          p.noStroke();
-          p.ellipse(this.x, this.y, this.r);
-          p.pop();
-          // console.log(staticBalls[i]);
+        p.push();
+        this._color.setAlpha(50);
+        p.fill(this._color);
+        p.noStroke();
+        p.ellipse(this.x, this.y, this.r);
+        p.pop();
+        // console.log(staticBalls[i]);
       }
     }
 
     class StaticBallSetting {
       constructor(countMax) {
         this.countMax = countMax;
-      };
+      }
       deviation = 500;
       R = class {
-        startMin = 1;
-        startMax = 10;
+        startMin = 2;
+        startMax = 3;
       };
 
       // color = [p.color(235, 109, 52), p.color(2, 197, 232), p.color(240, 0, 58)];
       color = [p.color(235, 189, 52), p.color(72, 197, 232), p.color(240, 109, 58)];
       r = new this.R();
     }
-    let staticBallSetting = new StaticBallSetting(200);
+    let staticBallSetting = new StaticBallSetting(0);
     let staticBalls = new Array(staticBallSetting.countMax);
 
     class DynamicBallSetting {
       constructor(countMax) {
         this.countMax = countMax;
       }
-      deviation=120;
+      deviation = 120;
       Shadow = class {
-        count = 6;
+        count = 1;
         rate = 25;
       };
       Speed = class {
-        min = 8;
-        max = 15;
+        min = 1;
+        max = 12;
+        slow = 4;
       };
       R = class {
-        startMin = 1;
+        startMin = 0.1;
         startMax = 2;
-        max = 25;
+        slowMax = 3;
+        max = 8;
       };
 
       oneTimeAppear = 3;
@@ -108,12 +111,13 @@ onMounted(() => {
       speed = new this.Speed();
       r = new this.R();
     }
-    let dynamicBallSetting = new DynamicBallSetting(300);
+    let dynamicBallSetting = new DynamicBallSetting(2000);
     let dynamicBalls = new Array(dynamicBallSetting.countMax);
-    let movePos = 0;
+    let ballRotation = 0;
 
     p.setup = () => {
       p.createCanvas(p.windowWidth, p.windowHeight).parent(container.value);
+      p.background(10);
     };
 
     p.windowResized = () => {
@@ -121,7 +125,8 @@ onMounted(() => {
     };
 
     p.draw = () => {
-      p.background(10);
+      p.background("rgba(10,10,10,0.3)");
+      console.log(ballRotation)
       CreateStaticBalls();
       CreateDynamicBalls();
       DynamicBallsUpdate();
@@ -134,7 +139,8 @@ onMounted(() => {
           do {
             x = p.randomGaussian() * staticBallSetting.deviation + p.windowWidth / 2;
             y = p.randomGaussian() * staticBallSetting.deviation + p.windowHeight / 2;
-          } while (p.dist(p.windowWidth / 2, p.windowHeight / 2, x, y) < 400);
+            // } while (p.dist(p.windowWidth / 2, p.windowHeight / 2, x, y) < 400);
+          } while (p.dist(p.windowWidth / 2, p.windowHeight / 2, x, y) < 30 || p.dist(p.windowWidth / 2, p.windowHeight / 2, x, y) > 80);
 
           staticBalls[i] = new ball(x, y, p.random(staticBallSetting.r.startMin, staticBallSetting.r.startMax), p.random(staticBallSetting.color), p.random(dynamicBallSetting.speed.min, dynamicBallSetting.speed.max));
         }
@@ -185,10 +191,13 @@ onMounted(() => {
       return isOutSide;
     }
 
-    // p.mouseWheel = (event) => {
-    //   // angle += event.delta / 100;
-    //   // console.log(angle);
-    // };
+    p.mouseWheel = (event) => {
+      if (event.deltaY > 0) {
+        ballRotation += p.PI / 4;
+      } else {
+        ballRotation -= p.PI / 4;
+      }
+    };
   });
 });
 </script>
