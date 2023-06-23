@@ -15,7 +15,7 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: "zh-TW",
       },
-      title: "P%_WhirlPool",
+      title: "P5_WhirlPool",
       script: [
         {
           type: "module",
